@@ -23,7 +23,9 @@ int main(){
         for(int j = 0; j < 5; j++){
             int rows = sizes[i];
             int cols = sizes[j];
-            if (rows*cols >= 100000000 || (rows >= 100000 && cols >= 1000)) continue;
+            if ((rows >= 100 && cols == 1000000) || (rows == 10000 && cols == 100000) || (rows == 100000 && cols >= 10000) || (rows == 1000000 && cols >= 1000)){
+                continue;
+            }
             for(int k = 0; k < atemps; k++){
                 int **matrix = createRandomMatrix(rows, cols);
                 measureTime(k, matrix, rows, cols, sumRows, 0);

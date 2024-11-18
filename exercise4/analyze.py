@@ -11,6 +11,7 @@ CSV file with the following columns:
 """
 
 operations = ['Sum by rows', 'Sum by columns']
+scale = [100, 1000, 10000, 100000, 1000000]
 
 def summarize_data(file):
     data = pd.read_csv(file)
@@ -22,12 +23,27 @@ def graph_results(file):
     grouped_data = data.groupby('operation')
     # In each group, plot the time vs the number of rows and columns (for multiple attempts calculate the average time)
     # Also, add a legend with the name of the algorithm
+    # Show x and y axis in 10^(2, 3, 4, 5, 6)
+    fig = plt.figure()
+    ax = fig.add_subplot(projection='3d')
     for name, group in grouped_data:
         group = group.groupby(['rows', 'cols']).mean()
         group = group.reset_index()
-        plt.plot(group['rows'], group['time'], label=operations[name])
-    plt.xlabel('Number of rows')
-    plt.ylabel('Time (s)')
+        # Remove the 'attempt' column
+        group = group.drop(columns=['attempt'])
+        group['operation'] = operations[name]
+        # Plot the data. In x axis the number of rows, in y axis the number of columns and in z axis the time
+        ax.scatter(group['rows'], group['cols'], group['time'], label=operations[name])
+        # Print without attempt column and change the name of the operation to the name of the algorithm
+        print(group)
+
+
+    ax.set_xlim(100, 1000000)
+    ax.set_ylim(100, 1000000)
+    ax.set_zlim(0, 0.7)
+    ax.set_xlabel('Rows')
+    ax.set_ylabel('Columns')
+    ax.set_zlabel('Time (s)')
     plt.legend()
     # Save the plot to a file
     plt.savefig('results.png')
