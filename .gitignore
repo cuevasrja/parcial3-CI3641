@@ -31,3 +31,5 @@ replay_pid*
 # Python project
 *.pyc
 __pycache__/
+.coverage
+htmlcov/
