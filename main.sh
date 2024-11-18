@@ -41,25 +41,12 @@ if [ $1 == "exe1-b" ]; then
         exit 1
     fi
     cd exercise1
-    if [ ! -f "partb.c" ]; then
-        make partb > /dev/null
-    fi
-    ./partb.out $2
+    make comp-b
+    java church $2
     cd ..
 elif [ $1 == "exe1-c" ]; then
-    # TODO
-    if [ $# -lt 2 ]; then
-        echo -e "\033[91;1mError:\033[0m The program needs at least 2 arguments"
-        echo -e "For more information, type: \033[1;92m$0 help\033[0m"
-        cd $ACTUAL_PATH
-        exit 1
-    fi
     cd exercise1
-    if [ ! -f "partc.c" ]; then
-        make partc > /dev/null
-    fi
-    # Send all the arguments except the first one
-    ./partc.out "${@:2}"
+    make run-c
     cd ..
 elif [ $1 == "exe3" ]; then
     cd exercise3
