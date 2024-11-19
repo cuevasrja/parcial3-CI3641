@@ -2,16 +2,14 @@ from sympy import binomial, floor, log, tribonacci
 import sys
 import time
 
+sys.set_int_max_str_digits(1000000)
+
 # Medimos el tiempo de ejecución
 start_time = time.time()
 n = int(sys.argv[1])
 k = floor(log(n,2))
 
-print(f"k: {k}")
-
 Narayana = binomial(n, k) * binomial(n, k - 1) / n
-
-print(f"Narayana: {Narayana}")
 
 tribonacci_index=floor(log(binomial(n, k) * binomial(n, k - 1) / n, 2))
 

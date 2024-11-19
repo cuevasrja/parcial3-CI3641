@@ -31,18 +31,10 @@ SRC_PATH=$(dirname $0)
 
 cd $SRC_PATH
 
-# If the first argument is exe1-b, then the program has to have 2 arguments
 if [ $1 == "exe1-b" ]; then
-    # TODO
-    if [ $# -lt 2 ]; then
-        echo -e "\033[91;1mError:\033[0m The program needs at least 2 arguments"
-        echo -e "For more information, type: \033[1;92m$0 help\033[0m"
-        cd $ACTUAL_PATH
-        exit 1
-    fi
     cd exercise1
     make comp-b
-    java church $2
+    java church
     cd ..
 elif [ $1 == "exe1-c" ]; then
     cd exercise1
