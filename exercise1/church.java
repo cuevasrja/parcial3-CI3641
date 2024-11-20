@@ -1,99 +1,129 @@
-import java.util.function.UnaryOperator;
-
 public class church {
-    public static void main(String[] args) {
-        // Check if the number of arguments is correct
-        if (args.length != 1) {
-            System.out.println("Usage: java Main <n>");
-            return;
+    public static class Church {
+        private String value;
+        
+        /**
+         * Constructor
+         */
+        public Church() {
+            this.value = "ZERO";
+        }
+    
+        /**
+         * Define the successor function
+         * @return Church
+         */
+        public Church suc() {
+            String value = "Suc(" + this.value + ")";
+            Church suc = new Church();
+            suc.value = value;
+            return suc;
+        }
+    
+        /**
+         * Apply the successor function n times to the Church instance
+         * @param other Church instance
+         * @return Church instance with the sum of both
+         */
+        public Church add(Church other) {
+            int n = this.toInteger();
+            int m = Church.toInteger(other);
+            Church result = Church.toChurch(n + m);
+            return result;
+        }
+    
+        /**
+         * Sum the Church instance with an integer
+         * @param other int
+         * @return Church instance with the sum of both
+         */
+        public Church add(int other) {
+            int n = this.toInteger();
+            int m = other;
+            Church result = Church.toChurch(n + m);
+            return result;
+        }
+    
+        /**
+         * Multiply the Church instance with an other Church instance
+         * @param other Church instance
+         * @return Church instance with the product of both
+         */
+        public Church multiply(Church other) {
+            int n = Church.toInteger(other);
+            int m = Church.toInteger(this);
+            Church result = Church.toChurch(n * m);
+            return result;
+        }
+    
+        /**
+         * Convert an integer to a Church numeral
+         * @param v int
+         * @return Church instance
+         */
+        public static Church toChurch(int v) {
+            Church number = new Church();
+            StringBuilder funStart = new StringBuilder();
+            StringBuilder funEnd = new StringBuilder();
+            while (v-- > 0) {
+                funStart.append("Suc(");
+                funEnd.append(")");
+            }
+            number.value = funStart + number.value + funEnd;
+            return number;
+        }
+    
+        /**
+         * Convert the Church numeral to an integer
+         * @return integer transformed from the Church numeral
+         */
+        public int toInteger() {
+            int i = 0;
+            for (int j = 0; j < this.value.length(); j++) {
+                if (this.value.charAt(j) == '(') i++;
+            }
+            return i;
+        }
+    
+        /**
+         * Convert the Church numeral to an integer
+         * @param a Church instance
+         * @return integer transformed from the Church numeral
+         */
+        public static int toInteger(Church a) {
+            int i = 0;
+            for (int j = a.value.length() - 1; j > 0 && a.value.charAt(j) != 'O'; j--) {
+                if (a.value.charAt(j) == ')') i++;
+            }
+            return i;
         }
 
-        // Parse the argument
-        int n = Integer.parseInt(args[0]);
-        System.out.println("n = " + n);
-
-        // Calculate the result
-        Church<Integer> result = Church.of(n);
-        System.out.println("Church(" + n + ") = " + result.apply(x -> x + 1, 0));
+        /**
+         * Convert the Church numeral to a string
+         * @return string transformed from the Church numeral
+         */
+        @Override
+        public String toString() {
+            return this.value;
+        }
     }
 
-    // public class ChurchNumeral {
-    //     int n;
-    //     ChurchNumeral next;
+    public static void main(String[] args) {
+        Church cero = new Church();
+        Church uno = cero.suc();
+        Church dos = uno.suc();
 
-    //     // Constructor
-    //     public ChurchNumeral(int n) {
-    //         this.n = n;
-    //     }
+        System.out.println("Cero: " + cero);
+        System.out.println("Uno: " + uno);
+        System.out.println("Dos: " + dos);
 
-    //     // Methods
+        Church tres = Church.toChurch(3);
+        System.out.println("Tres: " + tres);
 
-    //     public ChurchNumeral nextChurchNumeral() {
-    //         // TODO
-    //         return null;
-    //     }
-        
-    //     public ChurchNumeral add(ChurchNumeral n) {
-    //         // TODO
-    //         return null;
-    //     }
+        Church suma = uno.add(dos);
+        System.out.println("Uno + Dos: " + suma);
 
-    //     public ChurchNumeral multiply(ChurchNumeral n) {
-    //         // TODO
-    //         return null;
-    //     }
-
-    // }
-
-    // // Zero extends ChurchNumeral
-    // public class Zero extends ChurchNumeral {
-    //     int n = 0;
-    //     ChurchNumeral next = null;
-
-    //     // Constructor
-    //     public Zero() {
-    //         super(0);
-    //         // Create the Successor
-    //         next = new ChurchNumeral(1);
-    //     }
-    // }
-
-    static interface Church<T> extends UnaryOperator<UnaryOperator<T>> {
-
-        static <T> Church<T> of(int n) {
-            if (n < 0) {
-                throw new IllegalArgumentException();
-            } else if (n == 0) {
-                return zero();
-            } else {
-                return sum(one(), Church.of(n - 1));
-            }
-        }
-
-        static <T> Church<T> zero() {
-            return f -> (t -> t);
-        }
-
-        static <T> Church<T> one() {
-            return f -> f;
-        }
-
-        static <T> Church<T> sum(Church<T> a, Church<T> b) {
-            return f -> b.apply(f).andThen(a.apply(f))::apply;
-        }
-
-        static <T> Church<T> mul(Church<T> a, Church<T> b) {
-            return f -> a.apply(b.apply(f))::apply;
-        }
-
-        @SuppressWarnings("unchecked")
-        default <U> Church<U> convert() {
-            return (Church<U>) this;
-        }
-
-        default T apply(UnaryOperator<T> f, T t) {
-            return this.apply(f).apply(t);
-        }
-
+        Church producto = dos.multiply(tres);
+        System.out.println("Dos * Tres: " + producto);
     }
 }
