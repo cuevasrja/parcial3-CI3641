@@ -92,6 +92,8 @@ Church dos = uno.suc();
 
 System.out.println("Cero: " + cero);
 System.out.println("Uno: " + uno);
+
+System.out.println("Suma: " + dos.suma(uno));
 ```
 
 
@@ -111,21 +113,21 @@ El script compilará y ejecutará el programa `persons.java`, que define un tipo
 
 Tomando en cuenta las definiciones de X, Y y Z planteadas en los párrafos de introducción del examen, considere las siguientes definiciones de variables: 
 
-- $L_1 =min(X,Y)$
-- $L_2 =min(X,Z)$
-- $L_3 =min(Y,Z)$
-- $U_1 =max(X,Y) + 1$
-- $U_2 =max(X,Z) + 1$
-- $U_3 =max(Y,Z) + 1$ 
+- $L_1 = min(X,Y)$
+- $L_2 = min(X,Z)$
+- $L_3 = min(Y,Z)$
+- $U_1 = max(X,Y) + 1$
+- $U_2 = max(X,Z) + 1$
+- $U_3 = max(Y,Z) + 1$ 
 - $I = \lfloor \frac{L_1+U_1}{2} \rfloor$
 - $J = \lfloor \frac{L_2+U_2}{2} \rfloor$
 - $K = \lfloor \frac{L_3+U_3}{2} \rfloor$
  
-Considere también la siguiente declaración: M : array [L1..U1] of array [L2..U2] of array [L3..U3] of T Suponiendo que M inicia en la dirección cero (0) y que el tamaño del tipo T es cuatro (4), se desea que calcule: 
+Considere también la siguiente declaración: M : `array [L1..U1] of array [L2..U2] of array [L3..U3]` of T Suponiendo que M inicia en la dirección cero (0) y que el tamaño del tipo T es cuatro (4), se desea que calcule: 
 
-(a) La dirección de M[I][J][K] si las matrices se guardan en row–major. 
+(a) La dirección de `M[I][J][K]` si las matrices se guardan en row–major. 
 
-(b) La dirección de M[I][J][K] si las matrices se guardan en column–major.
+(b) La dirección de `M[I][J][K]` si las matrices se guardan en column–major.
 
 ### Respuesta
 
@@ -400,6 +402,12 @@ Para ejecutar el programa se puede usar el script `main.sh` que compila y ejecut
 ```
 
 Donde `<n>` es el valor de `n` para el cual se desea calcular el valor de `maldad(n)`.
+
+Tambien es posible probar todas las potencias de 2 hasta alcanzar el límite de tiempo.
+
+```bash
+./main.sh exe5 -p
+```
 
 El programa `main.py` implementa una función `maldad` que calcula el valor de la función `maldad(n)` de la forma más eficiente posible. El programa recibe un valor para `n` por la entrada estándar o argumento del sistema, y luego imprime el valor de `maldad(n)`.
 

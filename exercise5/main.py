@@ -26,12 +26,31 @@ def maldad(n):
 
 def main():
     # Get the number from the command line
-    n = int(sys.argv[1])
-    # Check the time and print the maldad of the number
-    start = time.time()
-    print(maldad(n))
-    end = time.time()
-    print("Time: ", end - start)
+    n: int
+    if sys.argv[1] == "-p":
+        i = 0
+        n = 0
+        dt = 0
+        while dt <= 1:
+            i += 1
+            n = 2**(i)
+            print("\033[1;92mNumber: ", n, "\033[0m")
+            print("\033[1;92mIndex: ", i, "\033[0m")
+            start = time.time()
+            print(maldad(n))
+            end = time.time()
+            dt = end - start
+            print("Time: ", dt)
+            print()
+        print(f"\033[1;93mLimit reached in\033[0m 2^{i} = {n}")
+    else:
+        n = int(sys.argv[2])
+        print("Number: ", n)
+        # Check the time and print the maldad of the number
+        start = time.time()
+        print(maldad(n))
+        end = time.time()
+        print("Time: ", end - start)
 
 if __name__ == "__main__":
     main()
