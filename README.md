@@ -133,80 +133,103 @@ Considere también la siguiente declaración: M : `array [L1..U1] of array [L2..
 
 X = 0, Y = 5, Z = 6
 
+- $L_1 = min(X,Y) = min(0,5) = 0$
+- $L_2 = min(X,Z) = min(0,6) = 0$
+- $L_3 = min(Y,Z) = min(5,6) = 5$
+- $U_1 = max(X,Y) + 1 = max(0,5) + 1 = 6$
+- $U_2 = max(X,Z) + 1 = max(0,6) + 1 = 7$
+- $U_3 = max(Y,Z) + 1 = max(5,6) + 1 = 7$
+- $I = \lfloor \frac{L_1+U_1}{2} \rfloor = \lfloor \frac{0+6}{2} \rfloor = 3$
+- $J = \lfloor \frac{L_2+U_2}{2} \rfloor = \lfloor \frac{0+7}{2} \rfloor = 3$
+- $K = \lfloor \frac{L_3+U_3}{2} \rfloor = \lfloor \frac{5+7}{2} \rfloor = 6$
+
 #### a) La dirección de M[I][J][K] si las matrices se guardan en row–major.
 
 Para calcular la dirección de `M[I][J][K]` en una matriz de tres dimensiones guardada en row-major, se debe tener en cuenta la fórmula general para calcular la dirección de un elemento en una matriz de N dimensiones:
 
-```
-Dirección = Base + (i * D1 + j * D2 + k * D3) * S
-```
+$$Direccion = base + (i − L_1) \times S_1 + (j − L_2) \times S_2 + (k − L_3) \times S_3$$
+
+$$S_3 = 4$$
+$$S_2 = S_3 \times (U_3 - L_3 + 1) = 4 \times (7 - 5 + 1) = 12$$
+$$S_1 = S_2 \times (U_2 - L_2 + 1) = 12 \times (7 - 0 + 1) = 96$$
 
 Donde:
-- `Base` es la dirección base de la matriz.
+- `base` es la dirección base de la matriz.
 - `i`, `j`, y `k` son los índices de la matriz.
-- `D1`, `D2`, y `D3` son los tamaños de las dimensiones de la matriz.
-- `S` es el tamaño del tipo de datos.
+- `L1`, `L2`, y `L3` son los límites inferiores de las dimensiones de la matriz.
+- `S1`, `S2`, y `S3` son los tamaños de las dimensiones de la matriz.
 - `M[I][J][K]` es el elemento de la matriz que se desea calcular.
 
 Para el caso de la matriz `M`, se tiene que:
-- `Base` = 0
-- `D1` = `U1 - L1 + 1` = `max(X,Y) - min(X,Y) + 1` = `Y - X + 1` = `5 - 0 + 1` = 6
-- `D2` = `U2 - L2 + 1` = `max(X,Z) - min(X,Z) + 1` = `Z - X + 1` = `6 - 0 + 1` = 7
-- `D3` = `U3 - L3 + 1` = `max(Y,Z) - min(Y,Z) + 1` = `Z - Y + 1` = `6 - 5 + 1` = 2
-- `S` = 4 (tamaño del tipo de datos)
-- `I` = `floor((L1 + U1) / 2)` = `floor((0 + 6) / 2)` = 3
-- `J` = `floor((L2 + U2) / 2)` = `floor((0 + 7) / 2)` = 3
-- `K` = `floor((L3 + U3) / 2)` = `floor((5 + 6) / 2)` = 5
+- `base` = 0
+- `L1` = 0
+- `L2` = 0
+- `L3` = 5
+- `U1` = 6
+- `U2` = 7
+- `U3` = 7
+- `S1` = 96
+- `S2` = 12
+- `S3` = 4
+- `I` = 3
+- `J` = 3
+- `K` = 6
 
 Sustituyendo estos valores en la fórmula general, se obtiene:
 
 ```
-Dirección = 0 + (3 * 6 + 3 * 7 + 5 * 2) * 4
-          = 0 + (18 + 21 + 10) * 4
-          = 0 + 49 * 4
-          = 0 + 196
-          = 196
+Dirección = 0 + (3 - 0) * 96 + (3 - 0) * 12 + (6 - 5) * 4
+          = 0 + 3 * 96 + 3 * 12 + 1 * 4
+          = 0 + 288 + 36 + 4
+          = 0 + 328
+          = 328
 ```
 
-Por lo tanto, la dirección de `M[I][J][K]` en una matriz de tres dimensiones guardada en row-major es 196.
+Por lo tanto, la dirección de `M[I][J][K]` en una matriz de tres dimensiones guardada en row-major es 328.
 
 #### b) La dirección de M[I][J][K] si las matrices se guardan en column–major.
 
 Para calcular la dirección de `M[I][J][K]` en una matriz de tres dimensiones guardada en column-major, se debe tener en cuenta la fórmula general para calcular la dirección de un elemento en una matriz de N dimensiones:
 
-```
-Dirección = Base + (k * D1 * D2 + j * D1 + i) * S
-```
+$$Direccion = base + (i - L_1) \times S_1 + (j - L_2) \times S_2 + (k - L_3) \times S_3$$
+
+$$S_1 = 4$$
+$$S_2 = S_1 \times (U_1 - L_1 + 1) = 4 \times (6 - 0 + 1) = 28$$
+$$S_3 = S_2 \times (U_2 - L_2 + 1) = 28 \times (7 - 0 + 1) = 224$$
 
 Donde:
-- `Base` es la dirección base de la matriz.
+- `base` es la dirección base de la matriz.
 - `i`, `j`, y `k` son los índices de la matriz.
-- `D1`, `D2`, y `D3` son los tamaños de las dimensiones de la matriz.
-- `S` es el tamaño del tipo de datos.
+- `L1`, `L2`, y `L3` son los límites inferiores de las dimensiones de la matriz.
+- `S1`, `S2`, y `S3` son los tamaños de las dimensiones de la matriz.
 - `M[I][J][K]` es el elemento de la matriz que se desea calcular.
-- `D1`, `D2`, y `D3` son los tamaños de las dimensiones de la matriz.
 
 Para el caso de la matriz `M`, se tiene que:
-- `Base` = 0
-- `D1` = `U1 - L1 + 1` = `max(X,Y) - min(X,Y) + 1` = `Y - X + 1` = `5 - 0 + 1` = 6
-- `D2` = `U2 - L2 + 1` = `max(X,Z) - min(X,Z) + 1` = `Z - X + 1` = `6 - 0 + 1` = 7
-- `D3` = `U3 - L3 + 1` = `max(Y,Z) - min(Y,Z) + 1` = `Z - Y + 1` = `6 - 5 + 1` = 2
-- `S` = 4 (tamaño del tipo de datos)
-- `I` = `floor((L1 + U1) / 2)` = `floor((0 + 6) / 2)` = 3
-- `J` = `floor((L2 + U2) / 2)` = `floor((0 + 7) / 2)` = 3
-- `K` = `floor((L3 + U3) / 2)` = `floor((5 + 6) / 2)` = 5
+- `base` = 0
+- `L1` = 0
+- `L2` = 0
+- `L3` = 5
+- `U1` = 6
+- `U2` = 7
+- `U3` = 7
+- `S1` = 4
+- `S2` = 28
+- `S3` = 224
+- `I` = 3
+- `J` = 3
+- `K` = 6
   
 Sustituyendo estos valores en la fórmula general, se obtiene:
 
 ```
-Dirección = 0 + (5 * 7 * 2 + 3 * 6 + 3) * 4
-          = 0 + (70 + 18 + 3) * 4
-          = 0 + 91 * 4
-          = 0 + 364
-          = 364
+Dirección = 0 + (3 - 0) * 4 + (3 - 0) * 28 + (6 - 5) * 224
+          = 0 + 3 * 4 + 3 * 28 + 1 * 224
+          = 0 + 12 + 84 + 224
+          = 0 + 320
+          = 320
 ```
 
-Por lo tanto, la dirección de `M[I][J][K]` en una matriz de tres dimensiones guardada en column-major es 364.
+Por lo tanto, la dirección de `M[I][J][K]` en una matriz de tres dimensiones guardada en column-major es 320.
 
 ## Pregunta 3
 
