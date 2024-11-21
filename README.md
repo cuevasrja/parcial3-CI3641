@@ -373,6 +373,9 @@ max|    1000000.000000|  100000.000000|   3.000000|   0.939049|   1.000000|
 |  100000|    1000|  0.714548|  Sum by columns|
 | 1000000|     100|  0.881807|  Sum by columns|
 
+> [!WARNING] Aclaratoria
+> Las combinaciones que no caben en memoria son: (rows >= 100 && cols == 1000000) || (rows == 10000 && cols == 100000) || (rows == 100000 && cols >= 10000) || (rows == 1000000 && cols >= 1000)
+
 #### Análisis de los tiempos obtenidos
 
 - ¿Hay alguna diferencia en tiempo de ejecución entre las dos implementaciones propuestas?
